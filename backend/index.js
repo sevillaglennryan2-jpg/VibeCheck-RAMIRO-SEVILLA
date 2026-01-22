@@ -32,4 +32,40 @@ const jokes = [
   "My code has two moods: works or why-is-this-happening.",
   "I told my program a joke... it just threw an exception.",
 ];
-// Endpoint: GET /api/fortune
+
+const vibeMap = {
+  happy: { emoji: "😄", message: "Keep going - you're shipping greatness!" },
+  tired: { emoji: "🥱", message: "Hydrate. Stretch. Then commit." },
+  stressed: { emoji: "😵‍💫", message: "Breathe. One bug at a time." },
+};
+
+// Smash counter (stored in memory for now)
+let smashes = 0;
+
+// GET /api/fortune -> returns one random fortune
+app.get("/api/fortune", (req, res) => {
+  const pick = fortunes[Math.floor(Math.random() * fortunes.length)];
+  res.json({ fortune: pick });
+});
+
+// GET /api/joke -> returns one random joke
+app.get("/api/joke", (req, res) => {
+  const pick = jokes[Math.floor(Math.random() * jokes.length)];
+  res.json({ joke: pick });
+});
+
+// GET /api/vibe?mood=happy|tired|stressed
+app.get("/api/vibe", (req, res) => {
+  const mood = (req.query.mood || "").toLowerCase();
+  const vibe = vibeMap[mood];
+
+  if (!vibe) {
+    return res.json({
+      mood: mood || "unknown",
+      emoji: "🤔",
+      message: "Try mood=happy, tired, or stressed.",
+    });
+  }
+
+  res.json({ mood, ...vibe });
+});
