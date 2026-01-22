@@ -81,16 +81,6 @@ app.get("/api/smashes", (req, res) => {
   res.json({ smashes });
 });
 
-// GET /api/secret?code=411L -> hidden message if code is correct
-app.get("/api/secret", (req, res) => {
-  const code = req.query.code;
-
-  if (code === "411L") {
-    return res.json({ message: "🎉 Secret unlocked: +10 luck on your next merge!" });
-  }
-
-  res.status(403).json({ message: "Nope 😄 Try code=411L" });
-});
 
 // Start server
 app.listen(PORT, () => {
